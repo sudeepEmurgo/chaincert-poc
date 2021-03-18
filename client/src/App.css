@@ -1,5 +1,7 @@
-.App {
-	/* text-align: center; */
+#root {
+	height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .App-logo {
@@ -23,11 +25,36 @@
 
 body {
 	/* background-color: lightgrey; */
+	/* background-image: url('/home3-bg.jpg'); */
+	/* background-size: cover; */
+	/* background-repeat: no-repeat; */
 }
 
 .container {
 	/* background-color: white; */
+	/* background-image: url('/home-bg.jpg'); */
 }
+
+.homePage{
+	height: 100%;
+	background-image: url('/home-bg.jpg');
+	/* background-size: cover; */
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.homeSideContainer{
+	height: 80%;
+	width: 30em;
+	padding: 3em 2em 0 2em;
+
+	background-color: rgb(0,16,29, .8);
+	/* background-image: linear-gradient(90deg, #08314e, #1167a4); */
+	/* background-image: linear-gradient(90deg,#08314e, #08314e, #08314e, #08314e, rgb(0,0,0,0)); */
+}
+
 .centerAlign {
 	text-align: center;
 	justify-content: center;
@@ -49,4 +76,229 @@ body {
 .table-width {
 	max-width: 150px;
 	word-wrap: break-word;
+}
+
+.noTopDownPadding{
+	padding: 0 1rem;
+}
+
+.navColor{
+	background-color: #00101d;
+}
+
+.navBrand {
+	padding-right: 2rem ;
+}
+
+.navBrand img{
+	width: 1.3em;
+	margin: 0 .2em .2em 0;
+}
+
+.navLink {
+	padding: 1.2rem 1rem !important;
+
+}
+
+.navLink:hover:not(.navLinkSelected){
+	background-color: #09395a;
+}
+
+.navLinkSelected{
+	background-color: #051c2c;
+    color: white !important;
+}
+
+.certificateVerification{
+	color: white;
+	text-align: left;
+	margin: 0 5px .2em 5px;
+}
+
+.homePageLogo{
+	display: flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	text-shadow: 7px 8px 10px rgb(0 0 0 / 50%);
+
+	margin: 0 0 5em 0;
+}
+
+.homePageLogo img{
+	width: 5em;
+}
+
+.homePageUnderline{
+	width: 16.5em;
+	height: 2px;
+	background-color: white;
+	margin:0 5px 1em 5px;
+}
+
+.verificationInput:focus{
+	box-shadow: 25px 30px 30px rgb(0,0,0,0.3) !important;
+}
+
+.verificationBtn{
+	padding: 0 .3em;
+}
+
+.verificationBtn button{
+	padding-left: 2em;
+	padding-right: 2em;
+	border: none;
+	background-color: rgb(255,130,93, 0.6);
+	width: 100%;
+	/* color: #fff; */
+}
+
+.verificationBtn button:hover{
+	background-color: rgb(255,130,93, 0.9);
+	
+}
+
+.verificationBtn button:active{
+	background-color: rgb(255,130,93, 0.9) im !important;
+	
+}
+
+.verificationBtn button:focus{
+	background-color: rgb(255,130,93, 0.9) !important;
+	box-shadow: none !important;
+	border: none;
+}
+
+input:focus{
+	box-shadow: 0 0 0 0.2rem rgb(255,130,93, 25%) !important;
+	border:none;
+}
+
+
+
+
+
+/***************************** Certificate Page **********************************/
+
+.certificateMainContainer{
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+}
+
+.certificateLogo{
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	/* align-items: center; */
+
+	margin: 3em 0 0 0;
+}
+
+.certificateLogoBox{
+	height: fit-content;
+	padding: 5em;
+	display: flex;
+	flex-direction: column;
+	/* border: solid rgb(0,0,0,0.2) 2px; */
+	border-radius: .2em;
+
+	box-shadow: 2px 2px 50px rgb(0 0 0 / 10%);
+    border-radius: .5em;
+}
+
+.certificateLogo img{
+	width: 20em;
+	height: 20em;
+
+	/* margin: 5em 0 0 0; */
+}
+
+.certificateContent{
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	margin: 3em 0 0 0;
+}
+
+
+
+/***************************** Manager Page ***********************************/
+
+.managerTitle{
+	margin: .8em 0 .1em 0;
+}
+
+.managerUnderline{
+	width: 21.5em;
+	height: 3px;
+	background-color: rgb(255,130,93, 1);
+	margin: 0 0 1.5em 0;
+}
+
+.button{
+	padding-left: 2em;
+	padding-right: 2em;
+	border: none;
+	background-color: rgb(255,130,93, 1);
+}
+
+.button:focus{
+	background-color: rgb(255,130,93, 1) !important;
+	box-shadow: 0 0 0 0.2rem rgb(255,130,93, 25%) !important;
+	border: none !important;
+}
+
+.button:hover{
+	background-color: rgb(255,130,93, .9) !important;
+}
+
+.tabsNav a{
+	color: rgb(224 71 26);
+}
+
+.tabs{
+	padding: 2em 0 0 0;
+	width: 50%;
+}
+
+.tabSubheading{
+	color: rgb(0,0,0,0.6);
+	margin: 1em 0 1em 0;
+}
+
+
+
+/***************************** Owner Page ***********************************/
+.ownerTitle{
+	margin: .8em 0 .1em 0;
+}
+
+.ownerUnderline{
+	width: 19.5em;
+	height: 3px;
+	background-color: rgb(255,130,93, 1);
+	margin: 0 0 1.5em 0;
+}
+
+.ownerInputContainer{
+	display: flex;
+}
+
+.ownerInput{
+	width: 50%;
+}
+
+.ownerInput input{
+	border-end-end-radius: 0;
+    border-start-end-radius: 0;
+    border-right: none;
+}
+
+.ownerInputBtn{
+	min-width: 12em;
+	border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

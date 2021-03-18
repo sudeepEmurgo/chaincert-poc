@@ -24,6 +24,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
+import { Switch, Route, NavLink, Redirect } from "react-router-dom";
 // const HDWalletProvider = require("@truffle/hdwallet-provider");
 // const dotenv = require("dotenv");
 // const env = dotenv.config().parsed;
@@ -338,7 +339,7 @@ class App extends Component {
 		const isOwner = await contract.methods.owner().call();
 		const isManager = await contract.methods.managers(accounts[0]).call();
 		console.log(accounts[0], isManager);
-		if (accounts[0] == isOwner) {
+		if (accounts[0] === isOwner) {
 			this.setState({
 				isOwner: true,
 				isManager,
@@ -413,108 +414,617 @@ class App extends Component {
 		}
 
 		return (
-			<div>
-				<Navbar bg="dark" variant="dark">
-					<Navbar.Brand href="#home">Emurgo</Navbar.Brand>
+			<>
+				<Navbar className='noTopDownPadding navColor'  variant="dark">
+					<NavLink exact to="/"> <Navbar.Brand className='navBrand'><img src='/emurgo_logo2.png'/>EMURGO</Navbar.Brand></NavLink>
 					<Nav className="mr-auto">
-						<Nav.Link href="https://www.emurgo.in">Home</Nav.Link>
+						<NavLink className='navLink nav-link' exact to="/" activeClassName="navLinkSelected">Home</NavLink>
+						{/* <Nav.Link href="/">Home</Nav.Link> */}
+						{this.state.isOwner && 
+						<NavLink className='navLink nav-link' to="/owner" activeClassName="navLinkSelected">Owner</NavLink>}
+
+						{(this.state.isOwner || this.state.isManager) &&
+						<NavLink className='navLink nav-link' to="/manager" activeClassName="navLinkSelected">Manager</NavLink>}
 					</Nav>
 				</Navbar>
-				<Container className="container">
-					<h1 className="centerAlign">Emurgo Certificate Verification</h1>
-					<br></br>
-					<Form onSubmit={this.handleSubmit}>
-						<Form.Row className="centerAlign">
-							<Col>
-								<Form.Control
-									size="lg"
-									type="text"
-									placeholder="Enter Certificate Id"
-									id="certId"
-									sm={10}
-								/>
-							</Col>
-						</Form.Row>
-						<br></br>
-						<div className="centerAlign">
-							<Button variant="primary" size="lg" type="submit">
-								Verify
-							</Button>
-						</div>
-					</Form>
-					{this.state.nameOfLearner != "" ? (
-						<React.Fragment>
-							<br></br>
-							<Row>
-								<Col sm={4}>
-									{this.state.nameOfCertificate.includes("Full Stack") ? (
-										<img
-											src="https://images.youracclaim.com/size/680x680/images/d578a11b-dd59-419b-817f-823068167a1f/Emurgo%2BStamp-02.png"
-											width="340px"
-										></img>
-									) : (
-										<img
-											src="https://images.youracclaim.com/size/680x680/images/3111f942-45f5-41b4-a187-16830bbc0696/Stamp_IL_-_2_PNG.png"
-											width="340px"
-										></img>
-									)}
-								</Col>
-								<Col sm={8} className="centerAlign">
-									<h1>{this.state.nameOfCertificate}</h1>
-								</Col>
-							</Row>
 
-							<div style={{ clear: "left" }} />
+				
 
-							<Table responsive>
-								<tbody>
-									<tr>
-										<td className="rightAlign">
-											Contract Address in Ethereum:
-										</td>
-										<td>
-											<a
-												href={
-													"https://rinkeby.etherscan.io/address/" +
-													this.state.contractAddress
-												}
-												target="_blank"
-											>
-												{this.state.contractAddress}
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Name of the Learner:</td>
-										<td>{this.state.nameOfLearner}</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Issued By:</td>
-										<td>
-											<a href="https://www.emurgo.in" target="_blank">
-												{this.state.issuedBy}
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Issued On:</td>
-										<td>{this.state.issuedOn}</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Updated On:</td>
-										<td>{this.state.updatedOn}</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Certificate Description:</td>
-										<td>{this.state.description}</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">
-											<ListGroup variant="flush">Skills:</ListGroup>
-										</td>
-										<td>
+				
+					<Switch>
+						<Route exact path='/'>
+							<div className='homePage'>
+								<div className='homeSideContainer'>
+									<div className='homePageLogo'>
+										<img src='/emurgo_logo2.png'/>
+										<h3>EMURGO</h3>
+									</div>
+									<h4 className="centerAlign certificateVerification">Certificate Verification</h4>
+									<div className='homePageUnderline'></div>
+									
+									<br></br>
+									<Form onSubmit={this.handleSubmit}>
+										<Form.Row className="centerAlign">
+											<Col>
+												<Form.Control
+													size="lg"
+													type="text"
+													placeholder="Enter Certificate Id"
+													id="certId"
+													sm={10}
+													className='verificationInput'
+												/>
+											</Col>
+										</Form.Row>
+										<br></br>
+										<div className="verificationBtn">
+											<Button variant="primary" size="lg" type="submit">
+												Verify
+											</Button>
+										</div>
+									</Form>
+								</div>
+								
+								{this.state.nameOfLearner != "" ? (
+									<Redirect to='/certificate' />
+									// <React.Fragment>
+									// 	<br></br>
+									// 	<Row>
+									// 		<Col sm={4}>
+									// 			{this.state.nameOfCertificate.includes("Full Stack") ? (
+									// 				<img
+									// 					src="https://images.youracclaim.com/size/680x680/images/d578a11b-dd59-419b-817f-823068167a1f/Emurgo%2BStamp-02.png"
+									// 					width="340px"
+									// 				></img>
+									// 			) : (
+									// 				<img
+									// 					src="https://images.youracclaim.com/size/680x680/images/3111f942-45f5-41b4-a187-16830bbc0696/Stamp_IL_-_2_PNG.png"
+									// 					width="340px"
+									// 				></img>
+									// 			)}
+									// 		</Col>
+									// 		<Col sm={8} className="centerAlign">
+									// 			<h1>{this.state.nameOfCertificate}</h1>
+									// 		</Col>
+									// 	</Row>
+
+									// 	<div style={{ clear: "left" }} />
+
+									// 	<Table responsive>
+									// 		<tbody>
+									// 			<tr>
+									// 				<td className="rightAlign">
+									// 					Contract Address in Ethereum:
+									// 				</td>
+									// 				<td>
+									// 					<a
+									// 						href={
+									// 							"https://rinkeby.etherscan.io/address/" +
+									// 							this.state.contractAddress
+									// 						}
+									// 						target="_blank"
+									// 					>
+									// 						{this.state.contractAddress}
+									// 					</a>
+									// 				</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Name of the Learner:</td>
+									// 				<td>{this.state.nameOfLearner}</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Issued By:</td>
+									// 				<td>
+									// 					<a href="https://www.emurgo.in" target="_blank">
+									// 						{this.state.issuedBy}
+									// 					</a>
+									// 				</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Issued On:</td>
+									// 				<td>{this.state.issuedOn}</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Updated On:</td>
+									// 				<td>{this.state.updatedOn}</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Certificate Description:</td>
+									// 				<td>{this.state.description}</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">
+									// 					<ListGroup variant="flush">Skills:</ListGroup>
+									// 				</td>
+									// 				<td>
+									// 					<h5>
+									// 						{this.state.skills.map((skill) => (
+									// 							<React.Fragment>
+									// 								<Badge pill variant="primary">
+									// 									{skill}
+									// 								</Badge>
+									// 								<t> </t>
+									// 							</React.Fragment>
+									// 						))}
+									// 					</h5>
+									// 				</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">
+									// 					<ListGroup variant="flush">
+									// 						Eligibility Criteria:
+									// 					</ListGroup>
+									// 				</td>
+									// 				<td>
+									// 					<ListGroup variant="flush">
+									// 						{this.state.eligibility.map((el) => (
+									// 							<React.Fragment>
+									// 								<ListGroup.Item>
+									// 									- {el}
+									// 									<br></br>
+									// 								</ListGroup.Item>
+									// 							</React.Fragment>
+									// 						))}
+									// 					</ListGroup>
+									// 				</td>
+									// 			</tr>
+									// 			<tr>
+									// 				<td className="rightAlign">Projects:</td>
+									// 				<td>
+									// 					<ListGroup variant="flush">
+									// 						{this.state.projects.map(
+									// 							(p) => (
+									// 								// p.map((project) => (
+									// 								<React.Fragment>
+									// 									<ListGroup.Item>
+									// 										<h4>
+									// 											<u>{p.technology}</u>
+									// 										</h4>
+									// 										<b>Title:</b> {p.title}
+									// 										<br></br>
+									// 										<b>Description:</b> {p.description}
+									// 										<br></br>
+									// 										<b>URL:</b>{" "}
+									// 										<a href={p.url} target="_blank">
+									// 											{p.url}
+									// 										</a>
+									// 									</ListGroup.Item>
+									// 								</React.Fragment>
+									// 							)
+									// 							// ))
+									// 						)}
+									// 					</ListGroup>
+									// 				</td>
+									// 			</tr>
+									// 		</tbody>
+									// 	</Table>
+									// 	<div style={{ textAlign: "center" }}>
+									// 		<Button
+									// 			variant="outline-success"
+									// 			href="https://emurgo.in/course-outline"
+									// 			target="_blank"
+									// 		>
+									// 			Know more about the course
+									// 		</Button>
+									// 	</div>
+									// 	<br></br>
+									// 	<br></br>
+									// </React.Fragment>
+								) : (""
+									// <Row>
+									// 	<Col sm={4}>
+									// 		<img
+									// 			src="https://static2.clutch.co/s3fs-public/logos/8ef64ef1c4e433a508c5ec7d3055974b.jpeg?u4WtNsyaFv2gtX.kizGZd66iHuL_iNHS"
+									// 			width="340px"
+									// 		></img>
+									// 	</Col>
+									// 	<Col sm={8} className="centerAlign">
+									// 		<h1>
+									// 			Please enter a valid certificate ID above to get details of
+									// 			certificate
+									// 		</h1>
+									// 	</Col>
+									// </Row>
+								)}
+							</div>
+							
+						</Route>
+
+						<Route exact path='/certificate'>
+							{this.state.nameOfLearner!="" ?
+							<React.Fragment>
+									<div className='certificateMainContainer'>
+										<div className='certificateLogo'>
+										<div className='certificateLogoBox'>
+											{this.state.nameOfCertificate.includes("Full Stack") ? (
+												<img
+													src="https://images.youracclaim.com/size/680x680/images/d578a11b-dd59-419b-817f-823068167a1f/Emurgo%2BStamp-02.png"
+													width="340px"
+												></img>
+											) : (
+												<img
+													src="https://images.youracclaim.com/size/680x680/images/3111f942-45f5-41b4-a187-16830bbc0696/Stamp_IL_-_2_PNG.png"
+													width="340px"
+												></img>
+											)}
+										</div>
+											
+										</div>
+
+										<div className='certificateContent'>
+											<h1>{this.state.nameOfCertificate}</h1>
+
+											<Table responsive>
+												<tbody>
+													<tr>
+														<td className="rightAlign">
+															Contract Address in Ethereum:
+														</td>
+														<td>
+															<a
+																href={
+																	"https://rinkeby.etherscan.io/address/" +
+																	this.state.contractAddress
+																}
+																target="_blank"
+															>
+																{this.state.contractAddress}
+															</a>
+														</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Name of the Learner:</td>
+														<td>{this.state.nameOfLearner}</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Issued By:</td>
+														<td>
+															<a href="https://www.emurgo.in" target="_blank">
+																{this.state.issuedBy}
+															</a>
+														</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Issued On:</td>
+														<td>{this.state.issuedOn}</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Updated On:</td>
+														<td>{this.state.updatedOn}</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Certificate Description:</td>
+														<td>{this.state.description}</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">
+															<ListGroup variant="flush">Skills:</ListGroup>
+														</td>
+														<td>
+															<h5>
+																{this.state.skills.map((skill) => (
+																	<React.Fragment>
+																		<Badge pill variant="primary">
+																			{skill}
+																		</Badge>
+																		<t> </t>
+																	</React.Fragment>
+																))}
+															</h5>
+														</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">
+															<ListGroup variant="flush">
+																Eligibility Criteria:
+															</ListGroup>
+														</td>
+														<td>
+															<ListGroup variant="flush">
+																{this.state.eligibility.map((el) => (
+																	<React.Fragment>
+																		<ListGroup.Item>
+																			- {el}
+																			<br></br>
+																		</ListGroup.Item>
+																	</React.Fragment>
+																))}
+															</ListGroup>
+														</td>
+													</tr>
+													<tr>
+														<td className="rightAlign">Projects:</td>
+														<td>
+															<ListGroup variant="flush">
+																{this.state.projects.map(
+																	(p) => (
+																		// p.map((project) => (
+																		<React.Fragment>
+																			<ListGroup.Item>
+																				<h4>
+																					<u>{p.technology}</u>
+																				</h4>
+																				<b>Title:</b> {p.title}
+																				<br></br>
+																				<b>Description:</b> {p.description}
+																				<br></br>
+																				<b>URL:</b>{" "}
+																				<a href={p.url} target="_blank">
+																					{p.url}
+																				</a>
+																			</ListGroup.Item>
+																		</React.Fragment>
+																	)
+																	// ))
+																)}
+															</ListGroup>
+														</td>
+													</tr>
+												</tbody>
+											</Table>
+											<div style={{ textAlign: "center" }}>
+												<Button
+													variant="outline-success"
+													href="https://emurgo.in/course-outline"
+													target="_blank"
+												>
+													Know more about the course
+												</Button>
+											</div>
+										</div>
+									</div>
+									
+
+									
+								</React.Fragment>
+							: <Redirect to='/' />}
+						</Route>
+
+						<Route exact path='/owner'>
+							{this.state.isOwner ? (
+							<Container className="container">
+							<React.Fragment>
+								<h1 className="ownerTitle">Owner Console</h1>
+								<div className='ownerUnderline'></div>
+								<br></br>
+								<Form className="ownerInputContainer" onSubmit={this.addManager}>
+									<Form.Row className="ownerInput">
+										<Col>
+											<Form.Control
+												size="lg"
+												type="text"
+												placeholder="Enter new manager address"
+												id="addManagerAddress"
+												sm={10}
+											/>
+										</Col>
+									</Form.Row>
+									<div>
+										<Button className='button ownerInputBtn' size="lg" type="submit">
+											Add Manager
+										</Button>
+									</div>
+								</Form>
+								<br></br>
+								<Form className="ownerInputContainer" onSubmit={this.removeManager}>
+									<Form.Row className="ownerInput">
+										<Col>
+											<Form.Control
+												size="lg"
+												type="text"
+												placeholder="Enter manager address to remove"
+												id="removeManagerAddress"
+												sm={10}
+											/>
+										</Col>
+									</Form.Row>
+									<div>
+										<Button className='button ownerInputBtn' size="lg" type="submit">
+											Remove Manager
+										</Button>
+									</div>
+								</Form>
+								<br></br>
+								<Form className="ownerInputContainer" onSubmit={this.changeOwner}>
+									<Form.Row className="ownerInput">
+										<Col>
+											<Form.Control
+												size="lg"
+												type="text"
+												placeholder="Enter new owner address to change"
+												id="newOwner"
+												sm={10}
+											/>
+										</Col>
+									</Form.Row>
+									<div>
+										<Button className='button ownerInputBtn' size="lg" type="submit">
+											Change Owner
+										</Button>
+									</div>
+								</Form>
+								<br></br>
+							</React.Fragment>
+							</Container>
+						) : (
+							""
+						)}
+						</Route>
+
+						<Route exact path='/manager'>
+							{this.state.isManager || this.state.isOwner ? (
+								<Container className="container">
+							<React.Fragment>
+								<h1 className="managerTitle">Manager Console</h1>
+								<div className='managerUnderline'></div>
+								<br></br>
+								<Tabs
+									defaultActiveKey="issueCertificate"
+									id="uncontrolled-tab-example"
+									className='tabsNav'
+								>
+									<Tab className='tabs' eventKey="issueCertificate" title="Issue Certificate">
+										<Form id="certiticateIssueForm">
+											<Form.Group>
+												<Form.Label>Certificate Id</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Add Id"
+													id="certificateIssueId"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Certificate Type Id</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Add Name"
+													id="certificateIssueTypeId"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Issued By</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Issuing Institution"
+													id="certificateIssueByName"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Issued To</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Name of learner"
+													id="certificateIssueLearnerName"
+												/>
+											</Form.Group>
+
+											<div>
+												<Button
+													variant="primary"
+													size="lg"
+													onClick={this.issueCertificate}
+													className='button'
+												>
+													Issue Certificate
+												</Button>
+											</div>
+											<br></br>
+										</Form>
+										<hr/>
+										<h4 className='tabSubheading'>Issued Certificates</h4>
+										<ListGroup>
+											{this.state.certificatesIssuedStream.map((certs) => (
+												<React.Fragment>
+													<ListGroup.Item
+														onClick={() =>
+															this.getCertificateDetails(certs.returnValues.Id)
+														}
+													>
+														{certs.returnValues.Id} -{" "}
+														{certs.returnValues.issuedTo} -{" "}
+														{certs.returnValues.certificateTypeId}
+													</ListGroup.Item>
+												</React.Fragment>
+											))}
+										</ListGroup>
+										<br></br>
+									</Tab>
+
+									<Tab className='tabs' eventKey="addProjectToCertificate"	title="Add Project to Certificate">
+										<Form id="projectAddForm">
+											<Form.Group>
+												<Form.Label>Certificate Id</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Choose Id"
+													id="projectAddCertId"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Technology</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Choose Technology"
+													id="projectAddTechnology"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Project Title</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="Add Project title"
+													id="projectAddTitle"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Description</Form.Label>
+												<Form.Control
+													as="textarea"
+													rows="4"
+													id="projectAddDescription"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Project URL</Form.Label>
+												<Form.Control
+													type="text"
+													placeholder="github"
+													id="projectAddURL"
+												/>
+											</Form.Group>
+
+											<div>
+												<Button
+													variant="primary"
+													size="lg"
+													onClick={this.addProjectToCertificate}
+													className='button'
+												>
+													Add Project to Certificate
+												</Button>
+											</div>
+											<br></br>
+										</Form>
+									</Tab>
+									
+									<Tab className='tabs' eventKey="addCertificateType" title="Add Certificate Type">
+										<Form id="certiticateAddForm">
+											<Form.Group>
+												<Form.Label>Certificate Type Id</Form.Label>
+												<Form.Control
+													id="certTypeAddId"
+													type="text"
+													placeholder="Add Id"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Certificate Type Name</Form.Label>
+												<Form.Control
+													id="certTypeAddName"
+													type="text"
+													placeholder="Add Name"
+												/>
+											</Form.Group>
+
+											<Form.Group>
+												<Form.Label>Description</Form.Label>
+												<Form.Control
+													id="certTypeAddDescription"
+													as="textarea"
+													rows="4"
+												/>
+											</Form.Group>
+											<Form.Group>
+												<Form.Label>Skills</Form.Label>
+												<Form.Control
+													type="text"
+													id="skillAdd"
+													placeholder="Add Skills one by one - press enter"
+													onKeyDown={this.onSKillAdd}
+												/>
+											</Form.Group>
 											<h5>
-												{this.state.skills.map((skill) => (
+												{this.state.skillsToAdd.map((skill) => (
 													<React.Fragment>
 														<Badge pill variant="primary">
 															{skill}
@@ -523,379 +1033,70 @@ class App extends Component {
 													</React.Fragment>
 												))}
 											</h5>
-										</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">
-											<ListGroup variant="flush">
-												Eligibility Criteria:
-											</ListGroup>
-										</td>
-										<td>
-											<ListGroup variant="flush">
-												{this.state.eligibility.map((el) => (
+											<Form.Group>
+												<Form.Label>Earning Criteria</Form.Label>
+												<Form.Control
+													type="text"
+													id="criteriaAdd"
+													onKeyDown={this.onCriteriaAdd}
+													placeholder="Add Criteria one by one - press enter"
+												/>
+											</Form.Group>
+											<h5>
+												{this.state.criteriaToAdd.map((criteria) => (
 													<React.Fragment>
-														<ListGroup.Item>
-															- {el}
-															<br></br>
-														</ListGroup.Item>
+														<Badge pill variant="success">
+															{criteria}
+														</Badge>
+														<t> </t>
 													</React.Fragment>
 												))}
-											</ListGroup>
-										</td>
-									</tr>
-									<tr>
-										<td className="rightAlign">Projects:</td>
-										<td>
-											<ListGroup variant="flush">
-												{this.state.projects.map(
-													(p) => (
-														// p.map((project) => (
-														<React.Fragment>
-															<ListGroup.Item>
-																<h4>
-																	<u>{p.technology}</u>
-																</h4>
-																<b>Title:</b> {p.title}
-																<br></br>
-																<b>Description:</b> {p.description}
-																<br></br>
-																<b>URL:</b>{" "}
-																<a href={p.url} target="_blank">
-																	{p.url}
-																</a>
-															</ListGroup.Item>
-														</React.Fragment>
-													)
-													// ))
-												)}
-											</ListGroup>
-										</td>
-									</tr>
-								</tbody>
-							</Table>
-							<div style={{ textAlign: "center" }}>
-								<Button
-									variant="outline-success"
-									href="https://emurgo.in/course-outline"
-									target="_blank"
-								>
-									Know more about the course
-								</Button>
-							</div>
-							<br></br>
-							<br></br>
-						</React.Fragment>
-					) : (
-						<Row>
-							<Col sm={4}>
-								<img
-									src="https://static2.clutch.co/s3fs-public/logos/8ef64ef1c4e433a508c5ec7d3055974b.jpeg?u4WtNsyaFv2gtX.kizGZd66iHuL_iNHS"
-									width="340px"
-								></img>
-							</Col>
-							<Col sm={8} className="centerAlign">
-								<h1>
-									Please enter a valid certificate ID above to get details of
-									certificate
-								</h1>
-							</Col>
-						</Row>
-					)}
-					{this.state.isOwner ? (
-						<React.Fragment>
-							<h1 className="centerAlign">Owner Console</h1>
-							<br></br>
-							<Form onSubmit={this.addManager}>
-								<Form.Row className="centerAlign">
-									<Col>
-										<Form.Control
-											size="lg"
-											type="text"
-											placeholder="Enter new manager address"
-											id="addManagerAddress"
-											sm={10}
-										/>
-									</Col>
-								</Form.Row>
-								<div>
-									<Button variant="primary" size="lg" type="submit">
-										Add Manager
-									</Button>
-								</div>
-							</Form>
-							<br></br>
-							<Form onSubmit={this.removeManager}>
-								<Form.Row className="centerAlign">
-									<Col>
-										<Form.Control
-											size="lg"
-											type="text"
-											placeholder="Enter manager address to remove"
-											id="removeManagerAddress"
-											sm={10}
-										/>
-									</Col>
-								</Form.Row>
-								<div>
-									<Button variant="danger" size="lg" type="submit">
-										Remove Manager
-									</Button>
-								</div>
-							</Form>
-							<br></br>
-							<Form onSubmit={this.changeOwner}>
-								<Form.Row className="centerAlign">
-									<Col>
-										<Form.Control
-											size="lg"
-											type="text"
-											placeholder="Enter new owner address to change"
-											id="newOwner"
-											sm={10}
-										/>
-									</Col>
-								</Form.Row>
-								<div>
-									<Button variant="danger" size="lg" type="submit">
-										Change Owner
-									</Button>
-								</div>
-							</Form>
-							<br></br>
-						</React.Fragment>
-					) : (
-						""
-					)}
-					{this.state.isManager || this.state.isOwner ? (
-						<React.Fragment>
-							<h1 className="centerAlign">Manager Console</h1>
-							<br></br>
-							<Tabs
-								defaultActiveKey="issueCertificate"
-								id="uncontrolled-tab-example"
-							>
-								<Tab eventKey="issueCertificate" title="Issue Certificate">
-									<Form id="certiticateIssueForm">
-										<Form.Group>
-											<Form.Label>Certificate Id</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Add Id"
-												id="certificateIssueId"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Certificate Type Id</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Add Name"
-												id="certificateIssueTypeId"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Issued By</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Issuing Institution"
-												id="certificateIssueByName"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Issued To</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Name of learner"
-												id="certificateIssueLearnerName"
-											/>
-										</Form.Group>
-
-										<div>
-											<Button
-												variant="primary"
-												size="lg"
-												onClick={this.issueCertificate}
-											>
-												Issue Certificate
-											</Button>
-										</div>
-										<br></br>
-									</Form>
-									<h1>Issued Certificates</h1>
-									<ListGroup>
-										{this.state.certificatesIssuedStream.map((certs) => (
-											<React.Fragment>
-												<ListGroup.Item
-													onClick={() =>
-														this.getCertificateDetails(certs.returnValues.Id)
-													}
+											</h5>
+											<div>
+												<Button
+													variant="primary"
+													size="lg"
+													onClick={this.addCertificateType}
+													className='button'
 												>
-													{certs.returnValues.Id} -{" "}
-													{certs.returnValues.issuedTo} -{" "}
-													{certs.returnValues.certificateTypeId}
-												</ListGroup.Item>
-											</React.Fragment>
-										))}
-									</ListGroup>
-									<br></br>
-								</Tab>
-
-								<Tab
-									eventKey="addProjectToCertificate"
-									title="Add Project to Certificate"
-								>
-									<Form id="projectAddForm">
-										<Form.Group>
-											<Form.Label>Certificate Id</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Choose Id"
-												id="projectAddCertId"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Technology</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Choose Technology"
-												id="projectAddTechnology"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Project Title</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="Add Project title"
-												id="projectAddTitle"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Description</Form.Label>
-											<Form.Control
-												as="textarea"
-												rows="4"
-												id="projectAddDescription"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Project URL</Form.Label>
-											<Form.Control
-												type="text"
-												placeholder="github"
-												id="projectAddURL"
-											/>
-										</Form.Group>
-
-										<div>
-											<Button
-												variant="primary"
-												size="lg"
-												onClick={this.addProjectToCertificate}
-											>
-												Add Project to Certificate
-											</Button>
-										</div>
-										<br></br>
-									</Form>
-								</Tab>
-								<Tab eventKey="addCertificateType" title="Add Certificate Type">
-									<Form id="certiticateAddForm">
-										<Form.Group>
-											<Form.Label>Certificate Type Id</Form.Label>
-											<Form.Control
-												id="certTypeAddId"
-												type="text"
-												placeholder="Add Id"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Certificate Type Name</Form.Label>
-											<Form.Control
-												id="certTypeAddName"
-												type="text"
-												placeholder="Add Name"
-											/>
-										</Form.Group>
-
-										<Form.Group>
-											<Form.Label>Description</Form.Label>
-											<Form.Control
-												id="certTypeAddDescription"
-												as="textarea"
-												rows="4"
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Skills</Form.Label>
-											<Form.Control
-												type="text"
-												id="skillAdd"
-												placeholder="Add Skills one by one - press enter"
-												onKeyDown={this.onSKillAdd}
-											/>
-										</Form.Group>
-										<h5>
-											{this.state.skillsToAdd.map((skill) => (
+													Add Certificate Type
+												</Button>
+											</div>
+											<br></br>
+										</Form>
+										<hr/>
+										<h4 className='tabSubheading'>Exisiting Certificate Types</h4>
+										<ListGroup>
+											{this.state.certificateTypeAddedStream.map((certType) => (
 												<React.Fragment>
-													<Badge pill variant="primary">
-														{skill}
-													</Badge>
-													<t> </t>
+													<ListGroup.Item
+														onClick={() =>
+															this.displayCertTypeDetails(certType.returnValues)
+														}
+													>
+														{certType.returnValues.Id} -{" "}
+														{certType.returnValues.name}
+													</ListGroup.Item>
 												</React.Fragment>
 											))}
-										</h5>
-										<Form.Group>
-											<Form.Label>Earning Criteria</Form.Label>
-											<Form.Control
-												type="text"
-												id="criteriaAdd"
-												onKeyDown={this.onCriteriaAdd}
-												placeholder="Add Criteria one by one - press enter"
-											/>
-										</Form.Group>
-										<h5>
-											{this.state.criteriaToAdd.map((criteria) => (
-												<React.Fragment>
-													<Badge pill variant="success">
-														{criteria}
-													</Badge>
-													<t> </t>
-												</React.Fragment>
-											))}
-										</h5>
-										<div>
-											<Button
-												variant="primary"
-												size="lg"
-												onClick={this.addCertificateType}
-											>
-												Add Certificate Type
-											</Button>
-										</div>
+										</ListGroup>
 										<br></br>
-									</Form>
-									<h1>Exisiting Certificate Types</h1>
-									<ListGroup>
-										{this.state.certificateTypeAddedStream.map((certType) => (
-											<React.Fragment>
-												<ListGroup.Item
-													onClick={() =>
-														this.displayCertTypeDetails(certType.returnValues)
-													}
-												>
-													{certType.returnValues.Id} -{" "}
-													{certType.returnValues.name}
-												</ListGroup.Item>
-											</React.Fragment>
-										))}
-									</ListGroup>
-									<br></br>
-								</Tab>
-							</Tabs>
-						</React.Fragment>
-					) : (
-						""
-					)}
+									</Tab>
+								
+								</Tabs>
+							</React.Fragment>
+							</Container>
+						) : (
+							""
+						)}
+
+						</Route>
+
+					</Switch>
+				
+					
+					
+					
 					<Modal
 						show={this.state.showModal}
 						onHide={this.handleCloseModal}
@@ -909,7 +1110,7 @@ class App extends Component {
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
-							{this.state.modalType == "certTypeAdded" ? (
+							{this.state.modalType === "certTypeAdded" ? (
 								<React.Fragment>
 									<b>Name:</b> {this.state.certificateTypeLatest.name}
 									<br></br>
@@ -919,7 +1120,7 @@ class App extends Component {
 							) : (
 								""
 							)}
-							{this.state.modalType == "certIssued" ? (
+							{this.state.modalType === "certIssued" ? (
 								<React.Fragment>
 									<b>Name:</b> {this.state.certificateTypeLatest.issuedTo}
 									<br></br>
@@ -929,7 +1130,7 @@ class App extends Component {
 							) : (
 								""
 							)}
-							{this.state.modalType == "projectAdded" ? (
+							{this.state.modalType === "projectAdded" ? (
 								<React.Fragment>
 									<b>Project Added to Certificate</b>
 									<br></br>
@@ -952,8 +1153,8 @@ class App extends Component {
 							</Button>
 						</Modal.Footer>
 					</Modal>
-				</Container>
-			</div>
+				{/* </Container> */}
+			</>
 		);
 	}
 }
